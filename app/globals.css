@@ -1,26 +1,307 @@
 @import "tailwindcss";
+@import "lenis/dist/lenis.css";
 
+@source "../components";
+@source "../lib";
+
+/*
+  Dark, Apple product-page tokens.
+  Pure black ground, Apple greys, one blue accent and a titanium gradient for display type.
+*/
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #000000;
+  --bg-2: #0a0a0b;
+  --surface: #161617;
+  --surface-2: #1d1d1f;
+  --surface-3: #2a2a2d;
+  --ink: #f5f5f7;
+  --ink-2: #d2d2d7;
+  --muted: #86868b;
+  --faint: #424245;
+  --line: rgb(255 255 255 / 0.08);
+  --line-strong: rgb(255 255 255 / 0.16);
+  --accent: #2997ff;
+  --accent-2: #7fb1ec;
+
+  --radius-s: 14px;
+  --radius-m: 22px;
+  --radius-l: 32px;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --gutter: 20px;
+  --header-h: 64px;
+
+  color-scheme: dark;
+}
+
+@media (min-width: 640px) {
+  :root { --gutter: 40px; }
+}
+@media (min-width: 1280px) {
+  :root { --gutter: 64px; }
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg: var(--bg);
+  --color-bg-2: var(--bg-2);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-accent: var(--accent);
+  --color-accent-2: var(--accent-2);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "SF Pro Display", sans-serif;
+  --font-serif: var(--font-instrument-serif), ui-serif, Georgia, serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, "SF Mono", Menlo, monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-padding-top: calc(var(--header-h) + 16px);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-optical-sizing: auto;
+  font-size: 17px;
+  line-height: 1.47;
+  letter-spacing: -0.012em;
+  font-feature-settings: "cv11", "ss03";
+  overflow-x: clip;
+}
+
+::selection { background: var(--accent); color: #fff; }
+
+@layer components {
+  .wrap {
+    width: 100%;
+    max-width: 1440px;
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  .section { position: relative; padding-block: clamp(112px, 16vh, 180px); }
+
+  /* Type scale. One family; size does the work, like Apple's product pages. */
+  .t-mega {
+    font-weight: 700;
+    font-size: clamp(64px, 13vw, 220px);
+    line-height: 0.88;
+    letter-spacing: -0.06em;
+  }
+  .t-display {
+    font-weight: 650;
+    font-size: clamp(44px, 7vw, 112px);
+    line-height: 0.95;
+    letter-spacing: -0.05em;
+    text-wrap: balance;
+  }
+  .t-h2 {
+    font-weight: 650;
+    font-size: clamp(40px, 5.6vw, 88px);
+    line-height: 0.98;
+    letter-spacing: -0.048em;
+    text-wrap: balance;
+  }
+  .t-h3 {
+    font-weight: 600;
+    font-size: clamp(22px, 1.9vw, 28px);
+    line-height: 1.14;
+    letter-spacing: -0.028em;
+  }
+  .t-lead {
+    font-size: clamp(19px, 1.5vw, 24px);
+    line-height: 1.42;
+    letter-spacing: -0.018em;
+    color: var(--muted);
+    text-wrap: pretty;
+  }
+  .t-label {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    line-height: 1.4;
+    letter-spacing: 0;
+    color: var(--muted);
+  }
+  .t-serif {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -0.025em;
+  }
+
+  /* Titanium and sky gradients for display type */
+  .t-metal {
+    background: linear-gradient(180deg, #ffffff 0%, #ececf0 40%, #8e8e93 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .t-sky {
+    background: linear-gradient(100deg, #2997ff 0%, #7fb1ec 45%, #dbe9fb 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Buttons: one pair, Apple pill */
+  .btn {
+    --btn-bg: var(--ink);
+    --btn-fg: #000;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 50px;
+    padding: 0 26px;
+    border-radius: 999px;
+    background: var(--btn-bg);
+    color: var(--btn-fg);
+    font-size: 16px;
+    font-weight: 550;
+    letter-spacing: -0.012em;
+    white-space: nowrap;
+    transition: transform 250ms var(--ease-out), background-color 250ms var(--ease-out), box-shadow 250ms var(--ease-out);
+  }
+  .btn:hover { transform: scale(1.02); }
+  .btn:active { transform: scale(0.98); transition-duration: 120ms; }
+  .btn--ghost {
+    --btn-bg: rgb(255 255 255 / 0.06);
+    --btn-fg: var(--ink);
+    box-shadow: inset 0 0 0 1px var(--line-strong);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+  .btn--ghost:hover { --btn-bg: rgb(255 255 255 / 0.12); }
+  .btn--accent { --btn-bg: var(--accent); --btn-fg: #fff; }
+  .btn .btn__arrow { transition: transform 250ms var(--ease-out); }
+  .btn:hover .btn__arrow { transform: translateX(3px); }
+
+  .link-draw {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 350ms var(--ease-out);
+  }
+  .link-draw:hover, .link-draw:focus-visible { background-size: 100% 1px; }
+
+  .glass {
+    background: rgb(22 22 23 / 0.62);
+    backdrop-filter: saturate(180%) blur(22px);
+    -webkit-backdrop-filter: saturate(180%) blur(22px);
+    box-shadow: inset 0 0 0 0.5px rgb(255 255 255 / 0.14), 0 10px 40px -16px rgb(0 0 0 / 0.8);
+  }
+
+  /* Tiles: Apple's dark bento */
+  .tile {
+    position: relative;
+    border-radius: var(--radius-l);
+    background: var(--surface);
+    box-shadow: inset 0 0 0 0.5px var(--line);
+    overflow: hidden;
+    isolation: isolate;
+  }
+  /* Pointer spotlight; --mx/--my are set by the Spotlight component */
+  .tile[data-spot]::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: radial-gradient(420px circle at var(--mx, 50%) var(--my, -20%), rgb(41 151 255 / 0.16), transparent 60%);
+    opacity: var(--spot, 0);
+    transition: opacity 400ms var(--ease-out);
+  }
+  .tile[data-spot]::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: radial-gradient(260px circle at var(--mx, 50%) var(--my, -20%), rgb(127 177 236 / 0.55), transparent 70%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: var(--spot, 0);
+    transition: opacity 400ms var(--ease-out);
+    pointer-events: none;
+  }
+
+  .app-frame {
+    border-radius: var(--radius-m);
+    background: #1c1c1e;
+    box-shadow:
+      inset 0 0 0 0.5px rgb(255 255 255 / 0.14),
+      0 40px 120px -40px rgb(41 151 255 / 0.25),
+      0 30px 60px -30px rgb(0 0 0 / 0.9);
+    overflow: hidden;
+  }
+}
+
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+
+.skip-link {
+  position: fixed; left: 16px; top: 16px; z-index: 100;
+  transform: translateY(-200%);
+  padding: 12px 18px; border-radius: 999px;
+  background: var(--ink); color: #000; font-weight: 550;
+}
+.skip-link:focus-visible { transform: none; }
+
+/* Words that light up as they are read */
+.read-word { color: var(--faint); transition: color 250ms linear; }
+.read-word.is-lit { color: var(--ink); }
+.read-word.is-lit.is-accent { color: var(--accent-2); }
+
+.live-dot {
+  width: 8px; height: 8px; border-radius: 999px; background: #30d158;
+  animation: pulse-dot 2.8s var(--ease-out) infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { box-shadow: 0 0 0 0 rgb(48 209 88 / 0.5); }
+  50% { box-shadow: 0 0 0 6px rgb(48 209 88 / 0); }
+}
+
+/* Toolkit marquee rows */
+@keyframes marquee-l { to { transform: translate3d(-50%, 0, 0); } }
+@keyframes marquee-r { from { transform: translate3d(-50%, 0, 0); } to { transform: translate3d(0, 0, 0); } }
+.marquee-track { display: flex; width: max-content; will-change: transform; }
+.marquee-track[data-dir="l"] { animation: marquee-l 48s linear infinite; }
+.marquee-track[data-dir="r"] { animation: marquee-r 56s linear infinite; }
+[data-paused="true"] .marquee-track { animation-play-state: paused; }
+
+/* Small loops inside the project previews, 2.5 to 4 second cycles */
+@keyframes typing { 0%, 60%, 100% { transform: translateY(0); opacity: 0.5; } 30% { transform: translateY(-3px); opacity: 1; } }
+.mock-typing span { animation: typing 2.6s var(--ease-out) infinite; }
+.mock-typing span:nth-child(2) { animation-delay: 0.18s; }
+.mock-typing span:nth-child(3) { animation-delay: 0.36s; }
+@keyframes bar-fill { 0% { transform: scaleX(0.82); } 50%, 100% { transform: scaleX(1); } }
+.mock-bar { transform-origin: left; animation: bar-fill 3.2s var(--ease-out) infinite alternate; }
+@keyframes col-grow { from { transform: scaleY(0.6); } to { transform: scaleY(1); } }
+.mock-col { transform-origin: bottom; animation: col-grow 3s var(--ease-out) infinite alternate; }
+
+/* JS-only start states, so the page is whole without JS */
+.js [data-hide-until-ready] { visibility: hidden; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .js [data-hide-until-ready] { visibility: visible; }
+  .read-word { color: var(--ink); }
 }
