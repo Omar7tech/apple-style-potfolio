@@ -1,29 +1,28 @@
 "use client";
 
-import Image from "next/image";
 import { useRef } from "react";
 import { gsap, SplitText, useGSAP } from "@/lib/gsap";
 import { contact } from "@/lib/content";
 
+const STRIPS = 14;
+const SRC = "/omar-cutout.webp";
+
 /**
- * Hero: Omar between his own name.
- * "Omar" sits behind the portrait and "Builds" in front of it, so the photo has depth.
- * The portrait is black and white; a soft spotlight follows the pointer and shows it in colour.
- * On load the colour blooms over the face once and settles back, so touch screens see it too.
- * Scrolling pulls the two words apart and settles the portrait back.
+ * Hero: the name on the left, the portrait on the right, built from strips.
+ * The photo is cut into vertical strips with hairline gaps, as if it were assembled.
+ * Strips rise into place from the centre out, a wave of colour runs across them once,
+ * and afterwards the strips near the pointer lift and turn to colour, then settle back
+ * to black and white. Scrolling out lets the strips drift apart at different speeds.
  */
 export default function Hero() {
   const root = useRef<HTMLElement>(null);
-  const color = useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
-      const el = color.current!;
       const figure = root.current!.querySelector<HTMLElement>("[data-figure]")!;
+      const strips = gsap.utils.toArray<HTMLElement>("[data-strip]");
+      const colors = gsap.utils.toArray<HTMLElement>("[data-strip-color]");
       const mm = gsap.matchMedia();
-
-      // Spotlight position and size live in CSS variables on the colour layer.
-      gsap.set(el, { "--mx": "56%", "--my": "38%", "--r": "0px" });
 
       mm.add("(prefers-reduced-motion: no-preference)", () => {
         const words = SplitText.create("[data-word]", { type: "chars", mask: "chars", charsClass: "t-metal" });
@@ -48,9 +47,9 @@ export default function Hero() {
           .timeline({ defaults: { ease: "expo.out" } })
           .from("[data-rim]", { autoAlpha: 0, scale: 0.85, duration: 2.2 }, 0)
           .from(words.chars, { yPercent: 110, duration: 1.5, stagger: 0.045 }, 0.1)
-          .from("[data-figure-in]", { yPercent: 10, scale: 1.04, autoAlpha: 0, duration: 1.8 }, 0.2)
-          .to(el, { "--r": () => `${Math.round(figure.offsetWidth * 0.42)}px`, duration: 1.4, ease: "power2.out" }, 1.1)
-          .to(el, { "--r": "0px", duration: 1.6, ease: "power2.inOut" }, 2.7)
+          .from(strips, { yPercent: 104, duration: 1.4, stagger: { each: 0.05, from: "center" } }, 0.2)
+          .to(colors, { opacity: 1, duration: 0.5, ease: "power2.out", stagger: 0.06 }, 1.3)
+          .to(colors, { opacity: 0, duration: 0.9, ease: "power2.inOut", stagger: 0.06 }, 1.8)
           .from("[data-hero-fade]", { autoAlpha: 0, y: 12, duration: 1 }, 1.1);
 
         // Scrolling out.
@@ -61,7 +60,13 @@ export default function Hero() {
           })
           .to("[data-word-omar]", { xPercent: -12 }, 0)
           .to("[data-word-builds]", { xPercent: -24 }, 0)
-          .to(figure, { yPercent: 10, scale: 0.95 }, 0)
+          .to(figure, { scale: 0.96 }, 0)
+          .fromTo(
+            strips,
+            { yPercent: 0 },
+            { yPercent: (i: number) => [6, -4, 10, -2, 4, -8, 2][i % 7] + 4, ease: "none", immediateRender: false },
+            0,
+          )
           .to("[data-rim]", { autoAlpha: 0.25 }, 0)
           .to("[data-hero-ui]", { autoAlpha: 0, y: -40 }, 0);
 
@@ -76,33 +81,29 @@ export default function Hero() {
         gsap.set("[data-hide-until-ready]", { visibility: "visible" });
       });
 
-      // The colour spotlight follows the pointer anywhere over the hero.
-      const xTo = gsap.quickTo(el, "--mx", { duration: 0.6, ease: "power3.out", unit: "px" });
-      const yTo = gsap.quickTo(el, "--my", { duration: 0.6, ease: "power3.out", unit: "px" });
+      // Strips near the pointer lift a little and show their colour.
+      const lift = strips.map((el) => gsap.quickTo(el, "y", { duration: 0.6, ease: "power3.out" }));
+      const tint = colors.map((el) => gsap.quickTo(el, "opacity", { duration: 0.5, ease: "power2.out" }));
       const section = root.current!;
-      let placed = false;
       const onMove = (e: PointerEvent) => {
         const r = figure.getBoundingClientRect();
-        const x = e.clientX - r.left;
-        const y = e.clientY - r.top;
-        if (!placed) {
-          gsap.set(el, { "--mx": `${x}px`, "--my": `${y}px` });
-          placed = true;
-        }
-        xTo(x);
-        yTo(y);
+        const x = (e.clientX - r.left) / r.width;
+        const inside = e.clientY > r.top - 40 && e.clientY < r.bottom;
+        strips.forEach((_, i) => {
+          const center = (i + 0.5) / STRIPS;
+          const f = inside ? Math.exp(-Math.pow((x - center) / 0.085, 2)) : 0;
+          lift[i](-18 * f);
+          tint[i](Math.min(1, f * 1.25));
+        });
       };
-      const onEnter = () => gsap.to(el, { "--r": "190px", duration: 0.7, ease: "power3.out", overwrite: "auto" });
       const onLeave = () => {
-        placed = false;
-        gsap.to(el, { "--r": "0px", duration: 0.7, ease: "power3.inOut", overwrite: "auto" });
+        lift.forEach((fn) => fn(0));
+        tint.forEach((fn) => fn(0));
       };
       section.addEventListener("pointermove", onMove, { passive: true });
-      section.addEventListener("pointerenter", onEnter);
       section.addEventListener("pointerleave", onLeave);
       return () => {
         section.removeEventListener("pointermove", onMove);
-        section.removeEventListener("pointerenter", onEnter);
         section.removeEventListener("pointerleave", onLeave);
       };
     },
@@ -149,9 +150,11 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* The portrait: black and white, with a colour layer revealed by the spotlight */}
+      {/* The portrait, cut into strips: black and white, colour where the pointer is */}
       <div
         data-figure
+        role="img"
+        aria-label="Omar Abi Farraj in sunglasses and a black beanie"
         className="absolute bottom-[calc(24svh+24px)] left-1/2 aspect-square w-[min(100vw,52svh)] -translate-x-1/2 sm:bottom-0 sm:w-[min(96vw,78svh)] lg:left-[64%] lg:w-[min(58vw,96svh)]"
         style={{
           WebkitMaskImage:
@@ -162,36 +165,26 @@ export default function Hero() {
           maskComposite: "intersect",
         }}
       >
-        <div data-figure-in className="absolute inset-0">
-          <Image
-            src="/omar-cutout.webp"
-            alt="Omar Abi Farraj in sunglasses and a black beanie"
-            fill
-            priority
-            quality={90}
-            sizes="(min-width: 1024px) 58vw, (min-width: 640px) 78vh, 118vw"
-            className="object-contain object-bottom [filter:grayscale(1)_contrast(1.12)_brightness(0.9)]"
-          />
-          <div
-            ref={color}
-            aria-hidden
-            className="absolute inset-0"
-            style={{
-              WebkitMaskImage:
-                "radial-gradient(circle var(--r) at var(--mx) var(--my), #000 0%, #000 45%, transparent 100%)",
-              maskImage: "radial-gradient(circle var(--r) at var(--mx) var(--my), #000 0%, #000 45%, transparent 100%)",
-            }}
-          >
-            <Image
-              src="/omar-cutout.webp"
-              alt=""
-              fill
-              quality={90}
-              sizes="(min-width: 1024px) 58vw, (min-width: 640px) 78vh, 118vw"
-              className="object-contain object-bottom"
-            />
-          </div>
-        </div>
+        {Array.from({ length: STRIPS }, (_, i) => {
+          const bg = {
+            backgroundImage: `url(${SRC})`,
+            backgroundSize: `${STRIPS * 100}% 100%`,
+            backgroundPosition: `${(i / (STRIPS - 1)) * 100}% 100%`,
+            backgroundRepeat: "no-repeat",
+          };
+          return (
+            <div
+              key={i}
+              className="absolute inset-y-0 overflow-hidden [clip-path:inset(0_0.75px)]"
+              style={{ left: `${(i / STRIPS) * 100}%`, width: `${100 / STRIPS}%` }}
+            >
+              <div data-strip className="absolute inset-0 will-change-transform">
+                <div className="absolute inset-0 [filter:grayscale(1)_contrast(1.12)_brightness(0.9)]" style={bg} />
+                <div data-strip-color className="absolute inset-0 opacity-0" style={bg} />
+              </div>
+            </div>
+          );
+        })}
       </div>
 
       {/* Bottom fade so the copy sits on black */}
