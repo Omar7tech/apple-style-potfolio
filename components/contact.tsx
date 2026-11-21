@@ -111,7 +111,7 @@ export default function Contact() {
         {/* Interactive signature: hover a letter to see its outline and metrics, drag or click it */}
         <div className="mt-24 h-[clamp(160px,22vw,340px)] text-ink lg:mt-32">
           <TechText
-            text="Omar Abi Farraj"
+            text="Omar Builds"
             fontWeight={700}
             fontSize={280}
             letterSpacing={-0.06}
@@ -128,7 +128,7 @@ export default function Contact() {
         </div>
 
         <div className="flex flex-col gap-3 border-t border-line py-8 text-[13px] text-muted sm:flex-row sm:items-center sm:justify-between">
-          <p>© 2026 Omar Abi Farraj</p>
+          <p>© 2026 Omar Builds · Omar Abi Farraj</p>
           <p className="flex items-center gap-2">
             <span className="live-dot" aria-hidden />
             <span>

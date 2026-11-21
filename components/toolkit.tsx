@@ -45,6 +45,9 @@ export default function Toolkit() {
             <h2 id="tools-title" className="t-h2 max-w-[16ch]">
               The tools behind <span className="text-faint">every build.</span>
             </h2>
+            <p className="t-lead mt-6 max-w-[46ch]">
+              Proven tools used by companies of every size. You never need to touch them; they keep your app fast and secure.
+            </p>
           </div>
           <button
             type="button"

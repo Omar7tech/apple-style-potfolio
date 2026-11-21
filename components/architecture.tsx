@@ -10,11 +10,11 @@ type Node = { id: string; label: string; sub: string; icons: IconKey[]; x: numbe
 
 // Coordinates in a 1000 x 460 box.
 const nodes: Node[] = [
-  { id: "web", label: "Web app", sub: "Next.js, React", icons: ["nextjs", "react"], x: 140, y: 230 },
-  { id: "api", label: "API", sub: "Laravel or Node", icons: ["laravel", "nodejs"], x: 480, y: 230 },
-  { id: "db", label: "Database", sub: "PostgreSQL, MySQL", icons: ["postgresql", "mysql"], x: 850, y: 70 },
-  { id: "queue", label: "Queues", sub: "Redis, RabbitMQ", icons: ["redis", "rabbitmq"], x: 850, y: 230 },
-  { id: "pay", label: "Payments", sub: "Stripe", icons: ["stripe"], x: 850, y: 390 },
+  { id: "web", label: "Your website", sub: "What customers use", icons: ["nextjs", "react"], x: 140, y: 230 },
+  { id: "api", label: "Your system", sub: "Your business rules", icons: ["laravel", "nodejs"], x: 480, y: 230 },
+  { id: "db", label: "Your data", sub: "Stored safely", icons: ["postgresql", "mysql"], x: 850, y: 70 },
+  { id: "queue", label: "Automatic tasks", sub: "Emails and reminders", icons: ["redis", "rabbitmq"], x: 850, y: 230 },
+  { id: "pay", label: "Payments", sub: "Cards, through Stripe", icons: ["stripe"], x: 850, y: 390 },
 ];
 
 const edges: [string, string][] = [
@@ -30,9 +30,9 @@ function pathFor(a: Node, b: Node) {
 }
 
 const facts = [
-  { title: "Typed from end to end", body: "TypeScript on the front, validated requests on the API, so bad data is rejected before it reaches the database." },
-  { title: "Slow work runs in queues", body: "Emails, exports and payment webhooks run in the background and retry when they fail." },
-  { title: "Deployed where you want it", body: "Vercel, a VPS or shared hosting like Hostinger, with a written guide for your team." },
+  { title: "Mistakes are caught early", body: "Every form checks what people type, so wrong or broken details never reach your records." },
+  { title: "Busy days don't slow it down", body: "Emails, reports and payment updates run in the background and try again if something fails." },
+  { title: "Hosted where it suits you", body: "On a fast cloud host or your own server, with written steps your team can follow." },
 ];
 
 export default function Architecture() {
@@ -86,13 +86,13 @@ export default function Architecture() {
       <div className="wrap">
         <Reveal className="grid gap-6 lg:grid-cols-12 lg:items-end">
           <div className="lg:col-span-7">
-            <p className="t-label mb-5">How your app is built</p>
+            <p className="t-label mb-5">What sits behind your app</p>
             <h2 id="arch-title" className="t-h2">
               One system, <span className="t-serif text-accent">designed</span> before it is coded.
             </h2>
           </div>
           <p className="t-lead lg:col-span-4 lg:col-start-9">
-            In a typical build, the web app talks to one API, and the API owns the data, the background jobs and the payments.
+            The website is only the part people see. Behind it, one system keeps your data safe, sends the emails and takes the payments.
           </p>
         </Reveal>
 

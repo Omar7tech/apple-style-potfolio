@@ -2,6 +2,7 @@ import Header from "@/components/header";
 import Hero from "@/components/hero";
 import Statement from "@/components/statement";
 import Work from "@/components/work";
+import Archive from "@/components/archive";
 import Services from "@/components/services";
 import Toolkit from "@/components/toolkit";
 import Architecture from "@/components/architecture";
@@ -16,6 +17,7 @@ export default function Home() {
         <Hero />
         <Statement />
         <Work />
+        <Archive />
         <Services />
         <Architecture />
         <Toolkit />

@@ -8,7 +8,7 @@ import { BrandIcon } from "./brand-icon";
 import Reveal from "./reveal";
 import Spotlight from "./spotlight";
 
-const words = ["Billing.", "Dashboards.", "Real-time.", "Storefronts."];
+const words = ["Payments.", "Dashboards.", "Live.", "Stores."];
 const spans = ["lg:col-span-7", "lg:col-span-5", "lg:col-span-5", "lg:col-span-7"];
 
 /** A plan switcher that changes plan every three seconds. */
@@ -64,7 +64,7 @@ export default function Services() {
             </h2>
           </div>
           <p className="t-lead lg:col-span-4">
-            Each comes with the backend, the front end and the deploy, so there is no hand-off between people.
+            You get the design, the build and the launch from one person, so nothing gets lost between teams.
           </p>
         </Reveal>
 

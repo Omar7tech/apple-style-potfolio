@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { nav, contact } from "@/lib/content";
+import Logo from "./logo";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -82,17 +83,11 @@ export default function Header() {
           >
             <a
               href="#top"
-              className="group flex items-center gap-2.5 text-[15px] font-semibold tracking-[-0.02em]"
-              aria-label="Omar Abi Farraj, back to top"
+              className="flex min-h-11 items-center"
+              aria-label="Omar Builds, back to top"
               onClick={() => setOpen(false)}
             >
-              <span
-                aria-hidden
-                className="grid size-7 place-items-center rounded-full bg-ink text-[12px] font-bold text-black transition-transform duration-300 group-hover:scale-105"
-              >
-                O
-              </span>
-              <span>Omar Abi Farraj</span>
+              <Logo />
             </a>
 
             <nav aria-label="Main" className="hidden items-center md:flex">

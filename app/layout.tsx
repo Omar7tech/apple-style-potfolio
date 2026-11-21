@@ -26,9 +26,9 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
-const title = "Omar Abi Farraj — Full-stack engineer in Beirut";
+const title = "Omar Builds — Websites and business software by Omar Abi Farraj";
 const description =
-  "Full-stack engineer building SaaS products, admin dashboards and online stores with Laravel, React and Next.js. Five years of experience, based in Beirut.";
+  "Omar Abi Farraj builds websites, custom business software and online stores. Five years of experience, based in Beirut, working with clients anywhere.";
 
 export const metadata: Metadata = {
   title,
@@ -39,6 +39,7 @@ export const metadata: Metadata = {
     description,
     type: "website",
     images: [{ url: "/omar.webp", width: 1254, height: 1254, alt: "Portrait of Omar Abi Farraj" }],
+    siteName: "Omar Builds",
   },
   twitter: { card: "summary_large_image", title, description, images: ["/omar.webp"] },
 };

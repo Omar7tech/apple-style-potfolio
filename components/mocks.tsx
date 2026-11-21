@@ -213,7 +213,7 @@ function Chat() {
           </div>
         </div>
         <div className="flex items-center gap-2 border-t border-white/10 p-3">
-          <span className="flex-1 rounded-full bg-white/8 px-4 py-2 text-white/40">Message, encrypted with AES-256</span>
+          <span className="flex-1 rounded-full bg-white/8 px-4 py-2 text-white/40">Write a private message</span>
           <span className="grid size-8 place-items-center rounded-full bg-[#2997ff]">
             <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden>
               <path d="M6 10V2m-3.5 3.5L6 2l3.5 3.5" stroke="#fff" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />

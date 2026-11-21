@@ -6,13 +6,13 @@ import { person } from "@/lib/content";
 
 // Words wrapped in * light up in the accent colour.
 const text =
-  "I started on the backend, so my work begins with *clear* *database* *schemas,* queues that retry and careful sign-in. Then I learned to care as much about the *screen* *people* *touch.* Today you talk to the person writing the code.";
+  "I build the software behind a business: the *website* *your* *customers* *see* and the *system* *your* *team* *runs* *on,* for orders, bookings and payments. You deal with one person from the first call to launch day.";
 
 const numbers = [
-  { value: 5, suffix: "", label: "years building web apps" },
-  { value: person.publicRepos, suffix: "", label: "public repositories on GitHub" },
-  { value: 4, suffix: "", label: "kinds of project, from SaaS to Shopify" },
-  { value: 1, suffix: "", label: "engineer from schema to screen" },
+  { value: 5, suffix: "", label: "years building websites and apps" },
+  { value: person.publicRepos, suffix: "", label: "projects published on GitHub" },
+  { value: 4, suffix: "", label: "kinds of project, from stores to booking systems" },
+  { value: 1, suffix: "", label: "person from first call to launch" },
 ];
 
 export default function Statement() {

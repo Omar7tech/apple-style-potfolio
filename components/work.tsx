@@ -103,11 +103,11 @@ export default function Work() {
           <div className="lg:col-span-8">
             <p className="t-label mb-6">Selected work, 2024 to 2026</p>
             <h2 id="work-title" className="t-display">
-              Products built <span className="t-serif t-sky pr-[0.06em]">end to end.</span>
+              Real products, <span className="t-serif t-sky pr-[0.06em]">start to finish.</span>
             </h2>
           </div>
           <p className="t-lead lg:col-span-4">
-            Four of the apps on my GitHub, each with its database, API and interface written by me.
+            Four apps I designed and built myself, from the screens people use to the system behind them.
           </p>
         </Reveal>
       </div>
