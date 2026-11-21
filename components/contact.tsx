@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { motion, useMotionValue, useSpring } from "motion/react";
 import { gsap, SplitText, useGSAP } from "@/lib/gsap";
 import { contact } from "@/lib/content";
+import Image from "next/image";
 import Reveal from "./reveal";
 import TechText from "./tech-text";
 
@@ -36,6 +37,16 @@ export default function Contact() {
           stagger: 0.03,
           scrollTrigger: { trigger: "[data-cta-text]", start: "top 88%", once: true },
         });
+        // The faded portrait drifts slower than the page, so it feels set back behind the words.
+        gsap.fromTo(
+          "[data-thinking]",
+          { yPercent: -6 },
+          {
+            yPercent: 8,
+            ease: "none",
+            scrollTrigger: { trigger: root.current, start: "top bottom", end: "bottom bottom", scrub: 0.4 },
+          },
+        );
         return () => split.revert();
       });
     },
@@ -50,6 +61,25 @@ export default function Contact() {
         className="pointer-events-none absolute inset-x-0 bottom-0 h-[70%] opacity-80"
         style={{ background: "radial-gradient(60% 55% at 50% 100%, rgb(41 151 255 / 0.28), transparent 70%)" }}
       />
+
+      {/* Omar, thinking it over: a large, faded black-and-white portrait behind the words */}
+      <div
+        data-thinking
+        aria-hidden
+        className="pointer-events-none absolute right-[-6%] top-[4%] aspect-[1244/1265] w-[min(820px,96vw)] opacity-[0.16] sm:right-[-2%] sm:w-[min(820px,70vw)] sm:opacity-[0.2]"
+        style={{
+          WebkitMaskImage: "radial-gradient(60% 58% at 52% 42%, #000 35%, transparent 100%)",
+          maskImage: "radial-gradient(60% 58% at 52% 42%, #000 35%, transparent 100%)",
+        }}
+      >
+        <Image
+          src="/omar-thinking.webp"
+          alt=""
+          fill
+          sizes="(min-width: 640px) 70vw, 96vw"
+          className="object-contain object-top [filter:grayscale(1)_contrast(1.15)_brightness(1.05)]"
+        />
+      </div>
 
       <div className="wrap relative">
         <Reveal className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
