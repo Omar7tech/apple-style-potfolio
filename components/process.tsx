@@ -42,7 +42,7 @@ export default function Process() {
             <li key={s.title} className="group relative">
               <span data-rule aria-hidden className="absolute inset-x-0 top-0 block h-px origin-left bg-line-strong" />
               <Reveal className="grid grid-cols-[auto_1fr] gap-x-8 gap-y-3 py-10 sm:grid-cols-[120px_1fr_1.4fr] sm:items-baseline lg:py-14">
-                <span className="t-metal text-[56px] font-bold leading-none tracking-[-0.06em] transition-[filter] duration-500 group-hover:brightness-150 sm:text-[72px]">
+                <span className="font-display t-metal text-[56px] leading-none tracking-[-0.03em] transition-[filter] duration-500 group-hover:brightness-150 sm:text-[72px]">
                   0{i + 1}
                 </span>
                 <h3 className="t-h3 self-center sm:self-auto">{s.title}</h3>

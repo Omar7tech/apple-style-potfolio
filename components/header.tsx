@@ -56,12 +56,10 @@ export default function Header() {
   // Lock scroll while the phone menu is open; Escape closes it.
   useEffect(() => {
     if (!open) return;
-    window.__lenis?.stop();
     document.documentElement.style.overflow = "hidden";
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
     window.addEventListener("keydown", onKey);
     return () => {
-      window.__lenis?.start();
       document.documentElement.style.overflow = "";
       window.removeEventListener("keydown", onKey);
     };
@@ -165,7 +163,7 @@ export default function Header() {
                     <a
                       href={`#${item.id}`}
                       onClick={() => setOpen(false)}
-                      className="block py-2 text-[44px] font-semibold leading-none tracking-[-0.045em]"
+                      className="font-display block py-2 text-[42px] leading-none tracking-[-0.03em]"
                     >
                       {item.label}
                     </a>

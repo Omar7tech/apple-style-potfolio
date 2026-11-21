@@ -76,7 +76,7 @@ export default function Contact() {
         >
           <span
             data-cta-text
-            className="t-metal block whitespace-nowrap pb-[0.06em] text-[clamp(56px,11.6vw,196px)] font-bold leading-[0.92] tracking-[-0.065em] transition-[filter] duration-700 group-hover:brightness-125"
+            className="font-display t-metal block whitespace-nowrap pb-[0.06em] text-[clamp(36px,9.6vw,164px)] leading-[0.98] tracking-[-0.035em] transition-[filter] duration-700 group-hover:brightness-125"
           >
             Start a project
           </span>
@@ -111,10 +111,11 @@ export default function Contact() {
         {/* Interactive signature: hover a letter to see its outline and metrics, drag or click it */}
         <div className="mt-24 h-[clamp(160px,22vw,340px)] text-ink lg:mt-32">
           <TechText
+            className="font-display"
             text="Omar Builds"
             fontWeight={700}
             fontSize={280}
-            letterSpacing={-0.06}
+            letterSpacing={-0.03}
             color="#f5f5f7"
             accentColor="#2997ff"
             reveal="letter"

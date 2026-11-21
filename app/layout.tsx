@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Instrument_Serif, JetBrains_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import SmoothScroll from "@/components/smooth-scroll";
 import "./globals.css";
 
@@ -11,11 +12,18 @@ const inter = Inter({
   display: "swap",
 });
 
-const instrumentSerif = Instrument_Serif({
-  variable: "--font-instrument-serif",
-  subsets: ["latin"],
-  weight: "400",
-  style: ["normal", "italic"],
+// Malinton: the display face for big headings, numbers and accent words. Body text stays in Inter.
+const malinton = localFont({
+  src: [
+    { path: "./fonts/Malinton-Light.woff2", weight: "300", style: "normal" },
+    { path: "./fonts/Malinton-Regular.woff2", weight: "400", style: "normal" },
+    { path: "./fonts/Malinton-Medium.woff2", weight: "500", style: "normal" },
+    { path: "./fonts/Malinton-SemiBold.woff2", weight: "600", style: "normal" },
+    { path: "./fonts/Malinton-Bold.woff2", weight: "700", style: "normal" },
+    { path: "./fonts/Malinton-ExtBd.woff2", weight: "800", style: "normal" },
+    { path: "./fonts/Malinton-Black.woff2", weight: "900", style: "normal" },
+  ],
+  variable: "--font-malinton",
   display: "swap",
 });
 
@@ -45,7 +53,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#000000",
+  themeColor: "#1a1a1a",
   colorScheme: "dark",
 };
 
@@ -53,7 +61,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${instrumentSerif.variable} ${jetbrainsMono.variable}`}
+      className={`${inter.variable} ${malinton.variable} ${jetbrainsMono.variable}`}
       suppressHydrationWarning
     >
       <head>

@@ -87,7 +87,7 @@ export default function Statement() {
           {numbers.map((n) => (
             <div key={n.label} data-num-cell className="flex flex-col-reverse justify-end">
               <dt className="mt-4 max-w-[18ch] text-[17px] leading-snug text-muted">{n.label}</dt>
-              <dd className="t-metal pb-[0.04em] text-[clamp(64px,8vw,128px)] font-bold leading-[0.9] tracking-[-0.06em] tabular-nums">
+              <dd className="font-display t-metal pb-[0.04em] text-[clamp(64px,8vw,128px)] leading-[0.95] tracking-[-0.03em] tabular-nums">
                 <span data-count={n.value}>{n.value}</span>
                 {n.suffix}
               </dd>

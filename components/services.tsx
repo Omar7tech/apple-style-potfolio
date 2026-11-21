@@ -88,7 +88,7 @@ export default function Services() {
                   {extras[i]}
                 </div>
                 <div>
-                  <p aria-hidden className="t-metal pb-[0.06em] text-[clamp(44px,15.5cqw,112px)] font-bold leading-[0.9] tracking-[-0.06em]">
+                  <p aria-hidden className="font-display t-metal pb-[0.06em] text-[clamp(36px,13cqw,104px)] leading-[0.98] tracking-[-0.03em]">
                     {words[i]}
                   </p>
                   <h3 className="t-h3 mt-6">{s.title}</h3>

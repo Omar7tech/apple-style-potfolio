@@ -1,68 +1,109 @@
 "use client";
 
-import { useState } from "react";
+import { motion } from "motion/react";
 import { icons, type IconKey } from "@/lib/icons";
 import { BrandIcon } from "./brand-icon";
 import Reveal from "./reveal";
+import Spotlight from "./spotlight";
 
-const rowA: IconKey[] = ["laravel", "react", "nextjs", "typescript", "tailwindcss", "livewire", "inertia", "php"];
-const rowB: IconKey[] = ["postgresql", "mysql", "redis", "rabbitmq", "stripe", "shopify", "docker", "nodejs", "gsap"];
+const EASE = [0.22, 1, 0.36, 1] as const;
 
-function Row({ items, dir, outline }: { items: IconKey[]; dir: "l" | "r"; outline?: boolean }) {
-  const list = [...items, ...items];
+/** Tools grouped by what they do for the client, in words a non-developer understands. */
+const groups: { title: string; body: string; tools: IconKey[]; span: string }[] = [
+  {
+    title: "Websites and apps",
+    body: "What your customers see and tap: fast pages that work on every phone.",
+    tools: ["nextjs", "react", "tailwindcss", "typescript", "gsap"],
+    span: "lg:col-span-7",
+  },
+  {
+    title: "Business systems",
+    body: "The engine behind the screens: accounts, orders, bookings and admin panels.",
+    tools: ["laravel", "php", "livewire", "inertia"],
+    span: "lg:col-span-5",
+  },
+  {
+    title: "Your data",
+    body: "Where every customer, order and file is stored safely.",
+    tools: ["postgresql", "mysql", "redis"],
+    span: "lg:col-span-4",
+  },
+  {
+    title: "Payments and stores",
+    body: "Card payments, subscriptions and online shops.",
+    tools: ["stripe", "shopify"],
+    span: "lg:col-span-4",
+  },
+  {
+    title: "Always running",
+    body: "Background tasks and setups that keep your app up and quick.",
+    tools: ["docker", "rabbitmq", "nodejs"],
+    span: "lg:col-span-4",
+  },
+];
+
+function ToolIcon({ name, index }: { name: IconKey; index: number }) {
+  const icon = icons[name];
+  const glow = icon.hex === "#000000" ? "#ffffff" : icon.hex;
   return (
-    <div className="overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_8%,#000_92%,transparent)]">
-      <ul className="marquee-track" data-dir={dir} aria-hidden>
-        {list.map((k, i) => (
-          <li key={i} className="group flex shrink-0 items-center gap-[0.35em] px-[0.45em] text-[clamp(48px,7.5vw,128px)] font-bold leading-[1.05] tracking-[-0.055em]">
-            <BrandIcon name={k} size={64} className="size-[0.62em] shrink-0 transition-transform duration-500 ease-[var(--ease-out)] group-hover:scale-110" />
-            <span
-              className={
-                outline
-                  ? "text-transparent transition-colors duration-500 [-webkit-text-stroke:1.5px_var(--faint)] group-hover:text-ink group-hover:[-webkit-text-stroke-color:transparent]"
-                  : "text-surface-3 transition-colors duration-500 group-hover:text-ink"
-              }
-            >
-              {icons[k].name}
-            </span>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <motion.li
+      className="group/tool flex w-[72px] flex-col items-center gap-2.5"
+      initial={{ opacity: 0, y: 14, scale: 0.92 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: true, amount: 0.4 }}
+      transition={{ duration: 0.8, delay: 0.15 + index * 0.06, ease: EASE }}
+    >
+      <span className="relative grid size-16 place-items-center rounded-[18px] bg-surface-2 shadow-[inset_0_0_0_0.5px_var(--line-strong)] transition-transform duration-500 ease-[var(--ease-out)] group-hover/tool:-translate-y-1">
+        <span
+          aria-hidden
+          className="absolute inset-0 rounded-[18px] opacity-0 transition-opacity duration-500 group-hover/tool:opacity-100"
+          style={{
+            boxShadow: `0 14px 34px -12px ${glow}`,
+            background: `radial-gradient(70% 70% at 50% 0%, ${glow}22, transparent)`,
+          }}
+        />
+        <BrandIcon name={name} size={30} className="relative" />
+      </span>
+      <span className="text-center text-[12.5px] leading-tight text-muted transition-colors duration-300 group-hover/tool:text-ink">
+        {icon.name}
+      </span>
+    </motion.li>
   );
 }
 
 export default function Toolkit() {
-  const [paused, setPaused] = useState(false);
-  const all = [...rowA, ...rowB].map((k) => icons[k].name).join(", ");
-
   return (
-    <section aria-labelledby="tools-title" className="section overflow-hidden" data-paused={paused}>
+    <section aria-labelledby="tools-title" className="section">
       <div className="wrap">
-        <Reveal className="flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between">
-          <div>
+        <Reveal className="grid gap-8 lg:grid-cols-12 lg:items-end">
+          <div className="lg:col-span-7">
             <p className="t-label mb-6">Toolkit</p>
-            <h2 id="tools-title" className="t-h2 max-w-[16ch]">
+            <h2 id="tools-title" className="t-h2">
               The tools behind <span className="text-faint">every build.</span>
             </h2>
-            <p className="t-lead mt-6 max-w-[46ch]">
-              Proven tools used by companies of every size. You never need to touch them; they keep your app fast and secure.
-            </p>
           </div>
-          <button
-            type="button"
-            onClick={() => setPaused((v) => !v)}
-            aria-pressed={paused}
-            className="btn btn--ghost !min-h-11 self-start !px-5 !text-[14px] sm:self-auto"
-          >
-            {paused ? "Play the list" : "Pause the list"}
-          </button>
+          <p className="t-lead lg:col-span-4 lg:col-start-9">
+            Proven tools used by companies of every size. You never need to touch them; they keep your app fast and secure.
+          </p>
         </Reveal>
-        <p className="sr-only">{all}</p>
-      </div>
-      <div className="mt-16 flex flex-col gap-2 lg:mt-20">
-        <Row items={rowA} dir="l" />
-        <Row items={rowB} dir="r" outline />
+
+        <ul className="mt-14 grid gap-4 lg:mt-20 lg:grid-cols-12">
+          {groups.map((g, i) => (
+            <Reveal as="li" key={g.title} index={i % 2} className={`h-full ${g.span}`}>
+              <Spotlight className="flex h-full min-h-[300px] flex-col justify-between gap-10 p-7 sm:p-9">
+                <ul className="flex flex-wrap gap-x-3 gap-y-5" aria-label={`${g.title} tools`}>
+                  {g.tools.map((t, j) => (
+                    <ToolIcon key={t} name={t} index={j} />
+                  ))}
+                </ul>
+                <div>
+                  <h3 className="t-h3">{g.title}</h3>
+                  <p className="mt-2 max-w-[40ch] text-[16px] leading-relaxed text-muted">{g.body}</p>
+                </div>
+              </Spotlight>
+            </Reveal>
+          ))}
+        </ul>
       </div>
     </section>
   );
