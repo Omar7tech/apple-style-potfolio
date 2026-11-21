@@ -4,7 +4,6 @@ import { useRef } from "react";
 import { motion, useMotionValue, useSpring } from "motion/react";
 import { gsap, SplitText, useGSAP } from "@/lib/gsap";
 import { contact } from "@/lib/content";
-import LocalTime from "./local-time";
 import Reveal from "./reveal";
 import TechText from "./tech-text";
 
@@ -130,13 +129,6 @@ export default function Contact() {
 
         <div className="flex flex-col gap-3 border-t border-line py-8 text-[13px] text-muted sm:flex-row sm:items-center sm:justify-between">
           <p>© 2026 Omar Builds · Omar Abi Farraj</p>
-          <p className="flex items-center gap-2">
-            <span className="live-dot" aria-hidden />
-            <span>
-              Beirut, <LocalTime />
-            </span>
-          </p>
-          <p>Product names and logos are trademarks of their owners.</p>
         </div>
       </div>
     </footer>
